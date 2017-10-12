@@ -13,21 +13,19 @@
             width:100%;
             height:100%;
         }
-        body{
-            width:400%;
-        }
         .box{
+            position: relative;
+            display: flex;
+            flex:0;
             width: 100%;
             height:100%;
             list-style-type: none;
             overflow: hidden;
-            background: pink;
-            transition: all 1s;
         }
         .box li{
-            width:25%;
-            float: left;
-            background: #eee;
+            width:100%;
+            flex-shrink: 0;
+            border:1px solid black;
         }
     </style>
 </head>
@@ -41,31 +39,26 @@
 <script>
     var boxs =document.getElementById("box");
     var lis =document.getElementsByTagName("li");
-    var ham = new Hammer(boxs);
-    var flag=true;
-    var n=0;
-    ham.on("panleft",function(){
-        if(flag){
-            n++;
-            if(n>=lis.length){
-                n=lis.length-1;
+    var l=lis[0].offsetLeft;
+    boxs.addEventListener("touchstart",function(er){
+        er.preventDefault();
+        var e=er.changedTouches[0].clientX;
+        var left=boxs.offsetLeft;
+        boxs.addEventListener("touchmove",function(er){
+            var w=er.changedTouches[0].clientX-e;
+            boxs.style.left=left+w+"px";
+        });
+        boxs.addEventListener("touchmend",function(er){
+            var s=Math.round(boxs.offsetLeft/l);
+            if(s<=0){
+                s=0;
             }
-            boxs.style.webkitTransform="translate3d(-"+n*25+"%,0,0)";
-            flag=false;
-        }
-    });
-    boxs.addEventListener("touchend",function(){
-        flag=true;
-    });
-    ham.on("panright",function(){
-        if(flag){
-            n--;
-            if(n<=0) n=0;
-            boxs.style.webkitTransform="translate3d(-"+n*25+"%,0,0)";
-            flag=false;
-        }
+            if(-s>=lis.length){
+                s=-(lis.length-1);
+            }
+            boxs.style.left=s*l+"px"
+        })
     })
-
 </script>
 </body>
 </html>
