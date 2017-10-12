@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>Title</title>
+    <script src="js/hammer.min.js"></script>
+    <style>
+        *{
+            margin:0;
+            padding:0;}
+        html,body{
+            width:100%;
+            height:100%;
+        }
+        body{
+            width:400%;
+        }
+        .box{
+            width: 100%;
+            height:100%;
+            list-style-type: none;
+            overflow: hidden;
+        }
+        .box li{
+            width:25%;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<ul id="box" class="box">
+    <li>01</li>
+    <li>02</li>
+    <li>03</li>
+    <li>04</li>
+</ul>
+<script>
+    var boxs =document.getElementById("box");
+    var ham = new Hammer(boxs);
+    var flag=true;
+    var n=0;
+    ham.on("panleft",function(){
+        if(flag){
+            n++;
+            boxs.style.webkitTransform="translate3d(-"+n*25+"%,0,0)";
+            flag=false;
+        }
+    });
+    boxs.addEventListener("touchend",function(){
+        flag=true;
+    });
+    ham.on("panright",function(){
+        if(flag){
+            n--;
+            boxs.style.webkitTransform="translate3d(-"+n*25+"%,0,0)";
+            flag=false;
+        }
+    })
+</script>
+</body>
+</html>
